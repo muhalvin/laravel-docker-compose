@@ -70,7 +70,7 @@ docker-compose exec app php artisan migrate
 Once the containers are up and running, your Laravel app should be accessible at:
 
 ```bash
-http://localhost:8000
+http://127.0.0.1:8000
 ```
 
 You can use this URL to access the Laravel application in your browser.
