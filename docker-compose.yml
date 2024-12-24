@@ -2,7 +2,7 @@ services:
   app:
     build: .
     ports:
-      - "8000:80"
+      - "9000:80"
     volumes:
       - .:/var/www/html
       - /var/www/html/vendor
@@ -16,7 +16,7 @@ services:
       MYSQL_DATABASE: laravel
       MYSQL_ROOT_PASSWORD: password
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
     networks:
