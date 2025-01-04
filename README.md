@@ -119,7 +119,7 @@ Here are some useful commands you can run inside the Docker container:
 - **Access the app container**:
 
   ```bash
-  docker-compose exec app bash
+  docker-compose exec -it app bash
   ```
 
 - **Stop and remove containers**:
@@ -134,6 +134,12 @@ Here are some useful commands you can run inside the Docker container:
 
   ```bash
   docker-compose down --volumes --remove-orphans
+  ```
+
+  Check resource used by docker:
+
+  ```bash
+  docker stats
   ```
 
 ## Troubleshooting
@@ -154,4 +160,4 @@ Here are some useful commands you can run inside the Docker container:
 
 ## Additional Information
 
-For more details, check out this article: [Setting Up Laravel 11 with Docker](https://muhalvin.medium.com/setting-up-a-laravel-11-with-docker-522eebbef82d)
+For more details, check out this article: [Setting Up Laravel 11 with Docker](https://towardsdev.com/setting-up-a-laravel-11-with-docker-522eebbef82d)
