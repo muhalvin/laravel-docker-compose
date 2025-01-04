@@ -9,15 +9,10 @@ services:
             - /var/www/html/bootstrap/cache # Storage for Laravel's cache
         networks:
             - app_network
-        mem_limit: "1G"
-        cpus: "0.5"
+        mem_limit: "2G"
+        cpus: "1"
         environment:
             - VIRTUAL_HOST=localhost # Use localhost for local development
-        logging:
-            driver: "json-file"
-            options:
-                max-size: "10m"
-                max-file: "3"
 
     db:
         image: mysql:8.0
@@ -30,13 +25,8 @@ services:
             - db_data:/var/lib/mysql # MySQL data storage
         networks:
             - app_network
-        mem_limit: "1G"
-        cpus: "0.5"
-        logging:
-            driver: "json-file"
-            options:
-                max-size: "10m"
-                max-file: "3"
+        mem_limit: "2G"
+        cpus: "1"
 
 volumes:
     db_data:
