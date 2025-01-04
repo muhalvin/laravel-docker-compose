@@ -1,30 +1,46 @@
 services:
-  app:
-    build: .
-    ports:
-      - "9000:80"
-    volumes:
-      - .:/var/www/html
-      - /var/www/html/vendor
-    networks:
-      - app_network
+    app:
+        build: .
+        ports:
+            - "9000:80" # Port to access the application from the browser
+        volumes:
+            - .:/var/www/html # Mount local application folder to container
+            - /var/www/html/storage # Storage for Laravel's storage folder
+            - /var/www/html/bootstrap/cache # Storage for Laravel's cache
+        networks:
+            - app_network
+        mem_limit: "1G"
+        cpus: "0.5"
+        environment:
+            - VIRTUAL_HOST=localhost # Use localhost for local development
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "10m"
+                max-file: "3"
 
-  db:
-    image: mysql
-    platform: linux/amd64
-    environment:
-      MYSQL_DATABASE: laravel
-      MYSQL_ROOT_PASSWORD: password
-    ports:
-      - "3307:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - app_network
+    db:
+        image: mysql:8.0
+        environment:
+            MYSQL_DATABASE: database
+            MYSQL_ROOT_PASSWORD: password
+        ports:
+            - "3307:3306" # Port to access MySQL
+        volumes:
+            - db_data:/var/lib/mysql # MySQL data storage
+        networks:
+            - app_network
+        mem_limit: "1G"
+        cpus: "0.5"
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "10m"
+                max-file: "3"
 
 volumes:
-  db_data:
+    db_data:
 
 networks:
-  app_network:
-    driver: bridge
+    app_network:
+        driver: bridge

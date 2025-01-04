@@ -1,10 +1,10 @@
-# Use the official PHP image with Apache
-FROM php:8.3-apache
+# Use PHP image with Apache
+FROM php:8.2-apache
 
-# Copy custom Apache config
+# Copy customized Apache configuration
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 
-# Install system dependencies
+# Install required system dependencies
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -15,26 +15,33 @@ RUN apt-get update && apt-get install -y \
     curl \
     libzip-dev \
     libicu-dev \
+    ca-certificates \
+    lsb-release \
+    gnupg \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql intl zip
+
+# Install Node.js and npm
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Copy application source to the image
+# Copy application into the image
 COPY . /var/www/html
 
-# Set the working directory
+# Set working directory
 WORKDIR /var/www/html
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Run Composer install to install the dependencies
+# Install Composer dependencies
 RUN git config --global --add safe.directory /var/www/html
 RUN composer install --no-interaction --no-plugins --no-scripts --prefer-dist
 
-# Adjust file permissions
+# Set file ownership for Apache
 RUN chown -R www-data:www-data /var/www/html
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
